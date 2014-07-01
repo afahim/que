@@ -5,6 +5,6 @@ window.onload = function() {
         $(".list-group-item").removeClass("active");
         $(".panel-body").hide();
         $(this).addClass("active");
-        $(this).next().show(400);
+        $(this).next().slideDown(400);
     });
 }
