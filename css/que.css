@@ -2,7 +2,25 @@
     font-size: 2em;
 }
 
+.list-group-item {
+
+}
+
 .panel-body {
     background-color: #EAEAEA;
     font-size: 1em;
 }
+
+#header {
+    font-size: 4em;
+    padding-bottom: 0.3em;
+}
+
+#count {
+    color: orange;
+}
+
+.badge {
+    font-size: 1.2em;
+}
+

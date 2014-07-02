@@ -7,4 +7,5 @@ window.onload = function() {
         $(this).addClass("active");
         $(this).next().slideDown(400);
     });
+
 }
