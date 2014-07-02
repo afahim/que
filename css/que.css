@@ -76,3 +76,74 @@
 .input-group-addon {
 }
 
+.rotated {
+    animation: turn-phone linear 0.5s;
+    -webkit-animation: turn-phone linear 0.5s;
+    -moz-animation: turn-phone linear 0.5s;
+    -ms-animation: turn-phone linear 0.5s;
+    color: #D3D3D3;
+}
+
+@-webkit-keyframes turn-phone {
+  0% {
+    transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+  }
+}
+
+@-moz-keyframes turn-phone {
+  0% {
+    transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+  }
+}
+
+@-ms-keyframes turn-phone {
+  0% {
+    transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+  }
+}
+
+@keyframes turn-phone {
+  0% {
+    transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+  }
+}

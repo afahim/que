@@ -14,6 +14,12 @@ window.onload = function() {
     });
 
     $(".glyphicon-plus").click(function() {
-        $("#enqueue-panel").slideDown(400);
+        if ($(this).hasClass('rotated')){
+            $(this).removeClass('rotated');
+            $("#enqueue-panel").slideUp(400);
+        } else {
+            $(this).addClass('rotated');
+            $("#enqueue-panel").slideDown(400);
+        }
     });
 }
