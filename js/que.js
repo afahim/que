@@ -24,4 +24,14 @@ window.onload = function() {
             $("#enqueue-panel").slideDown(400);
         }
     });
+
+    $(".btn").click(function() {
+        var name = $("#name").text();
+        var number = $("#number").text();
+
+        $(".glyphicon-plus").removeClass('rotated');
+        $("#enqueue-panel").slideUp(400);
+
+    });
+
 }
