@@ -34,6 +34,10 @@
     right: 0.1em;
     position: absolute;
     color: #00D700;
+    animation: return-plus linear 0.5s;
+    animation-fill-mode: forwards;
+    -webkit-animation: return-plus linear 0.5s;
+    -webkit-animation-fill-mode: forwards;
 }
 
 #count {
@@ -77,14 +81,15 @@
 }
 
 .rotated {
-    animation: turn-phone linear 0.5s;
-    -webkit-animation: turn-phone linear 0.5s;
-    -moz-animation: turn-phone linear 0.5s;
-    -ms-animation: turn-phone linear 0.5s;
+    animation: turn-plus linear 0.5s;
+    animation-fill-mode: forwards;
+    -webkit-animation: turn-plus linear 0.5s;
+    -webkit-animation-fill-mode: forwards;
     color: #D3D3D3;
 }
 
-@-webkit-keyframes turn-phone {
+
+@-webkit-keyframes turn-plus {
   0% {
     transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -93,57 +98,25 @@
   }
 
   100% {
-    transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
+    transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
   }
 }
 
-@-moz-keyframes turn-phone {
+@-webkit-keyframes return-plus {
   0% {
+    transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+  100% {
     transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-  }
-}
-
-@-ms-keyframes turn-phone {
-  0% {
-    transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-  }
-}
-
-@keyframes turn-phone {
-  0% {
-    transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
   }
 }

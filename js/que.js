@@ -1,11 +1,13 @@
 window.onload = function() {
-
     $(".list-group-item").click(function() {
         if (!$(this).hasClass('active')) {
             $(".list-group-item").removeClass("active");
             $(".panel-body").slideUp();
             $(this).addClass("active");
             $(this).next().slideDown(400);            
+        } else {
+            $(this).removeClass("active");
+            $(this).next().slideUp(400);            
         }
     });
 
