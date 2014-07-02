@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 #header {
     padding-left: 0.2em;
 }
@@ -49,7 +53,7 @@
 .glyphicon-ok {
     top: 2px;
     color: #D3D3D3;
-    padding-right: 9px;
+    padding-right: 11px;
 }
 
 #enqueue-panel {
@@ -66,7 +70,6 @@
      padding-top: 1em;
      padding-bottom: 2em;
      display: none;
-     line-height:200%;
 }
 
 .btn {
