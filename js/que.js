@@ -7,4 +7,7 @@ window.onload = function() {
         $(this).next().slideDown(400);
     });
 
+    $(".glyphicon-ok").click(function() {
+       $(this).css("color", "#00D700");
+    });
 }
