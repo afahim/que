@@ -1,5 +1,5 @@
- @font-face { font-family: chunkfive; src: url('../fonts/ChunkFive/Chunkfive.otf'); } 
- @font-face { font-family: quicksand; src: url('../fonts/quicksand/Quicksand-Regular.otf'); } 
+@font-face { font-family: chunkfive; src: url('../fonts/ChunkFive/Chunkfive.otf'); } 
+@font-face { font-family: quicksand; src: url('../fonts/quicksand/Quicksand-Regular.otf'); } 
 
 body {
     overflow-x: hidden;
@@ -12,6 +12,18 @@ body {
 
 .list-group {
     font-size: 2em;
+    padding-top: 1.2em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (max-width: 997px) {
+  .list-group {
+      padding-top: 0em;
+      padding-left: 0em;
+      padding-right: 0em;
+  }
 }
 
 .panel-body {
@@ -58,7 +70,7 @@ body {
 .glyphicon-ok {
     top: 2px;
     color: #D3D3D3;
-    padding-right: 11px;
+    padding-right: 13px;
 }
 
 #enqueue-panel {
