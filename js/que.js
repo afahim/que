@@ -5,11 +5,13 @@ window.onload = function() {
 
     $(".glyphicon-plus").click(function() {
         if ($(this).hasClass('rotated')){
-            $(this).removeClass('rotated');
-            $("#enqueue-panel").slideUp(400);
+            $("#enqueue-panel").slideUp(300, function(){
+                $(".glyphicon-plus").removeClass('rotated');
+            });
         } else {
-            $(this).addClass('rotated');
-            $("#enqueue-panel").slideDown(400);
+            $("#enqueue-panel").slideDown(300, function(){
+                $(".glyphicon-plus").addClass('rotated');
+            });
         }
     });
 
@@ -18,7 +20,7 @@ window.onload = function() {
         var number = document.getElementById('number').value;
 
         $(".glyphicon-plus").removeClass('rotated');
-        $("#enqueue-panel").slideUp(400);
+        $("#enqueue-panel").slideUp(300);
 
         var count = document.getElementsByClassName('list-group-item').length + 1;
 
@@ -66,10 +68,10 @@ function queueItemHandler() {
             $(".list-group-item").removeClass("active");
             $(".panel-body").slideUp();
             $(this).addClass("active");
-            $(this).next().slideDown(400);            
+            $(this).next().slideDown(300);            
         } else {
             $(this).removeClass("active");
-            $(this).next().slideUp(400);            
+            $(this).next().slideUp(300);            
         }
 }
 

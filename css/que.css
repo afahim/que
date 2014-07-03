@@ -38,9 +38,9 @@ body {
     right: 0.1em;
     position: absolute;
     color: #00D700;
-    animation: return-plus linear 0.5s;
+    animation: return-plus linear 0.2s;
     animation-fill-mode: forwards;
-    -webkit-animation: return-plus linear 0.5s;
+    -webkit-animation: return-plus linear 0.2s;
     -webkit-animation-fill-mode: forwards;
 }
 
@@ -91,9 +91,9 @@ body {
 }
 
 .rotated {
-    animation: turn-plus linear 0.5s;
+    animation: turn-plus linear 0.2s;
     animation-fill-mode: forwards;
-    -webkit-animation: turn-plus linear 0.5s;
+    -webkit-animation: turn-plus linear 0.2s;
     -webkit-animation-fill-mode: forwards;
     color: #D3D3D3;
 }
