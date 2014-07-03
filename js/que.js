@@ -1,4 +1,15 @@
+function populate() {
+    Parse.initialize("aOSEqkHWWIy0ngtzGjkYlAVRuujho3NZs6Aw2q9t", "H3i7PKGPBbnHMEwJN0QLM2mQh7Kqbfjqtb4GzoWz");
+    var TestObject = Parse.Object.extend("TestObject");
+    var testObject = new TestObject();
+    testObject.save({foo: "bar"}).then(function(object) {
+      alert("yay! it worked");
+    });
+}
+
 window.onload = function() {
+    populate();
+
     $(".list-group-item").click(queueItemHandler);
 
     $(".glyphicon-ok").click(glyphOKHandler);
