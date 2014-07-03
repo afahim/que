@@ -1,5 +1,9 @@
+ @font-face { font-family: chunkfive; src: url('../fonts/ChunkFive/Chunkfive.otf'); } 
+ @font-face { font-family: quicksand; src: url('../fonts/quicksand/Quicksand-Regular.otf'); } 
+
 body {
     overflow-x: hidden;
+    font-family: quicksand, sans-serif;
 }
 
 #header {
@@ -45,6 +49,7 @@ body {
 }
 
 .badge {
+    font-family: sans-serif;
     font-size: 1.3em;
     background-color: #428bca;
     border-radius: 5px;
