@@ -19,7 +19,7 @@ window.onload = function() {
 }
 
 function removeHandler(){
-    $(this).parent().next().remove();
+    $(this).parent().next(".panel-body").remove();
     $(this).parent().slideUp(300);
 }
 
@@ -28,7 +28,7 @@ function queueItemHandler() {
             $(".list-group-item").removeClass("active");
             $(".panel-body").slideUp();
             $(this).addClass("active");
-            $(this).next().slideDown(300);            
+            $(this).next(".panel-body").slideDown(300);            
         } else {
             $(this).removeClass("active");
             $(this).next(".panel-body").slideUp(300);            
@@ -38,7 +38,7 @@ function queueItemHandler() {
 function glyphOKHandler() {
         $(this).css("color", "#00D700");
 
-        var badge = $(this).next();
+        var badge = $(this).next(".badge");
 
         badge.removeClass("onqueue");
         renumerate();
