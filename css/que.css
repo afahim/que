@@ -103,12 +103,13 @@ body {
 }
 
 .btn {
-    position: absolute;
-    right: 1.2em;
+  display: none;
+  position: absolute;
+  right: 1.2em;
 }
 
 .btn:hover {
-    background-color: white;
+  background-color: white;
 }
 
 .col-lg-6 {
