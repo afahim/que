@@ -81,9 +81,13 @@ body {
 }
 
 .glyphicon-ok {
-    top: 2px;
-    color: #D3D3D3;
-    padding-right: 13px;
+  top: 2px;
+  color: #D3D3D3;
+  padding-right: 13px;
+}
+
+.completed {
+  color: #00D700;
 }
 
 #enqueue-panel {

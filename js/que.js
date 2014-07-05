@@ -1,28 +1,72 @@
-function populate() {
-    var queItem = Parse.Object.extend("QueItem");
-    var query = new Parse.Query(queItem);
-    query.find({
-      success: function(results) {
-        console.log("Successfully retrieved " + results.length + " items.");
-        for (var i = 0; i < results.length; i++) { 
-          var object = results[i];
-          displayOnQue(object.get("name"), object.get("number"), object.get("que_position"));
-        }
-      },
-      error: function(error) {
-        console.log("Error: " + error.code + " " + error.message);
-      }
+var queRef = null;
+var rootRef = null;
+
+function enqueue() {
+    var dateObj = new Date();
+    var newTime = dateObj.getTime();
+
+    var newName = document.getElementById('name').value;
+    var newNumber = document.getElementById('number').value;
+
+    var newPushRef = queRef.push({name: newName,
+        number: parseInt(newNumber),
+        created_at: parseInt(newTime),
+        completed: false
     });
 }
 
-window.onload = function() {
-    Parse.initialize("aOSEqkHWWIy0ngtzGjkYlAVRuujho3NZs6Aw2q9t", "H3i7PKGPBbnHMEwJN0QLM2mQh7Kqbfjqtb4GzoWz");
 
-    populate();
+function sync() {
+    queRef.on('child_added', function(snapshot, prevChildName) {
+        var queID = snapshot.name();
+        var queItem = snapshot.val();
+        displayItem(queID, queItem.name, queItem.number,
+            prevChildName, queItem.completed
+        );
+    });
+
+    queRef.on('child_changed', function(snapshot, prevChildName) {
+        var queID = snapshot.name();
+        var queItem = snapshot.val();
+        updateItem(queID, queItem.number, prevChildName, queItem.completed
+        );
+    });
+}
+
+function updateItem(objectID, number, prevChildName, completed) {
+    var updatedItem = $("#" + objectID);
+
+    //if completed
+    if (completed) {
+        updatedItem.children(".glyphicon").addClass("completed");
+
+        var badge = updatedItem.children(".badge");
+
+        badge.removeClass("onqueue");
+
+        badge.html("<span class=\"glyphicon glyphicon-remove\"></span>");
+        badge.addClass("removable");
+        badge.click(removeHandler);
+    }
+
+
+    //if position changed
+
+    updatedItem.next().text(number);
+
+    renumerate();        
+}
+
+
+window.onload = function() {
+    rootRef = new Firebase('https://qu.firebaseIO.com/');
+    queRef = rootRef.child('clients').child('woqod').child('que');
+
+    sync();
 
     $(".list-group-item").click(queueItemHandler);
 
-    $(".glyphicon-ok").click(glyphOKHandler);
+    $(".glyphicon-ok").click(completedHandler);
 
     $(".glyphicon-plus").click(function() {
         if ($(this).hasClass('rotated')){
@@ -46,7 +90,8 @@ function removeHandler(){
     $(this).parent().slideUp(300);
 }
 
-function queueItemHandler() {
+function queueItemHandler(e) {
+        e.preventDefault();
         if (!$(this).hasClass('active')) {
             $(".list-group-item").removeClass("active");
             $(".panel-body").slideUp();
@@ -58,8 +103,8 @@ function queueItemHandler() {
         }
 }
 
-function glyphOKHandler() {
-        $(this).css("color", "#00D700");
+function completedHandler(e) {
+        $(this).addClass("completed");
 
         var badge = $(this).next(".badge");
 
@@ -77,30 +122,7 @@ function renumerate() {
     });
 }
 
-function enqueue() {
-    var newName = document.getElementById('name').value;
-    var newNumber = document.getElementById('number').value;
-    var newCount = document.getElementsByClassName('onqueue').length + 1;
-    
-    var queItem = Parse.Object.extend("QueItem");
-    var newQueItem = new queItem();
-    newQueItem.set("name", newName);
-    newQueItem.set("number", parseInt(newNumber));
-    newQueItem.set("que_position", parseInt(newCount));
-
-    newQueItem.save(null, {
-      success: function(newQueItem) {
-        document.getElementById('name').value = "";
-        document.getElementById('number').value = "";
-        displayOnQue(newName, newNumber, newCount)
-      },
-      newQueItem: function(newQueItem, error) {
-        console.log("enqueue operation failed");
-      }
-    });
-}
-
-function displayOnQue(name, number, count) {
+function displayItem(objectID, name, number, prevChildName, completed) {
 
     $(".glyphicon-plus").removeClass('rotated');
     $("#enqueue-panel").slideUp(400);
@@ -109,33 +131,57 @@ function displayOnQue(name, number, count) {
     var node=document.createElement("a");
     node.href = "#";
     node.className = "list-group-item";
+    node.id = objectID;
 
     var icon=document.createElement("span");
-    icon.className = "glyphicon glyphicon-ok"
+
+    if (completed) {
+        icon.className = "glyphicon glyphicon-ok completed"
+    } else {
+        icon.className = "glyphicon glyphicon-ok"        
+        $(icon).click(completedHandler);
+    }
+
     node.appendChild(icon);
 
-    $(icon).click(glyphOKHandler);
-
-    var textnode=document.createTextNode(name);
+    var textnode = document.createTextNode(name);
     node.appendChild(textnode);
 
-    var badge=document.createElement("span");
-    badge.className = "badge onqueue"
+    var badge = document.createElement("span");
 
-    var badgeText = document.createTextNode(count);
-    badge.appendChild(badgeText);
+    if (completed) {
+        badge.className = "badge removable"
+
+        var removeIcon = document.createElement("span");
+        removeIcon.className = "glyphicon glyphicon-remove";
+
+        badge.appendChild(removeIcon);
+        $(badge).click(removeHandler);
+
+    } else {
+        badge.className = "badge onqueue"
+    }
 
     node.appendChild(badge);
 
     $(node).click(queueItemHandler);
 
-    document.getElementById("queue").appendChild(node);
-
-    var numNode=document.createElement("div");
+    var numNode = document.createElement("div");
     numNode.className = "panel-body";
 
-    var textnode=document.createTextNode(number);
+    var textnode = document.createTextNode(number);
     numNode.appendChild(textnode);
 
-    document.getElementById("queue").appendChild(numNode);
+    console.log("prevChildName " + prevChildName);
+    if (prevChildName == null) {
+        $(".list-group").prepend(node);
+
+        node.parentNode.insertBefore(numNode, node.nextSibling);
+    } else {
+        referenceNode = document.getElementById(prevChildName);
+        referenceNode.parentNode.insertBefore(node, referenceNode.nextSibling.nextSibling);
+        node.parentNode.insertBefore(numNode, node.nextSibling);
+    }
+    
+    renumerate();
 }
