@@ -91,19 +91,19 @@ body {
 }
 
 .highlighted {
-  animation:blink 1s;
-  -webkit-animation:blink 1s;
+  animation:blink 0.5s;
+  -webkit-animation:blink 0.5s;
 }
 
 @keyframes blink
 {
-  50% {background-color:#FFFF7D;}
+  50% {opacity:#FFFFB3;}
 }
 
 /*Safari and Chrome:*/
 @-webkit-keyframes blink
 {
-  50% {background-color:#FFFF7D;}
+  50% {opacity:#FFFFB3;}
 }
 
 
