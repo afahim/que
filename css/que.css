@@ -90,6 +90,23 @@ body {
   color: #00D700;
 }
 
+.highlighted {
+  animation:blink 1s;
+  -webkit-animation:blink 1s;
+}
+
+@keyframes blink
+{
+  50% {background-color:#FFFF7D;}
+}
+
+/*Safari and Chrome:*/
+@-webkit-keyframes blink
+{
+  50% {background-color:#FFFF7D;}
+}
+
+
 #enqueue-panel {
      -moz-box-shadow:    inset  0  8px 8px -8px #919191, 
                          inset  0 -8px 8px -8px #919191;

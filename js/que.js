@@ -31,32 +31,11 @@ function sync() {
         updateItem(queID, queItem.number, prevChildName, queItem.completed
         );
     });
+
+    queRef.on('child_removed', function(snapshot, prevChildName) {
+        removeItem(snapshot.name());
+    });
 }
-
-function updateItem(objectID, number, prevChildName, completed) {
-    var updatedItem = $("#" + objectID);
-
-    //if completed
-    if (completed) {
-        updatedItem.children(".glyphicon").addClass("completed");
-
-        var badge = updatedItem.children(".badge");
-
-        badge.removeClass("onqueue");
-
-        badge.html("<span class=\"glyphicon glyphicon-remove\"></span>");
-        badge.addClass("removable");
-        badge.click(removeHandler);
-    }
-
-
-    //if position changed
-
-    updatedItem.next().text(number);
-
-    renumerate();        
-}
-
 
 window.onload = function() {
     rootRef = new Firebase('https://qu.firebaseIO.com/');
@@ -85,9 +64,15 @@ window.onload = function() {
     $(".btn").click(enqueue);
 }
 
+function removeItem(objectID){
+    thisItem = $("#" + objectID);
+    thisItem.next(".panel-body").remove();
+    thisItem.slideUp(300);
+}
+
+
 function removeHandler(){
-    $(this).parent().next(".panel-body").remove();
-    $(this).parent().slideUp(300);
+
 }
 
 function queueItemHandler(e) {
@@ -104,16 +89,8 @@ function queueItemHandler(e) {
 }
 
 function completedHandler(e) {
-        $(this).addClass("completed");
-
-        var badge = $(this).next(".badge");
-
-        badge.removeClass("onqueue");
-        renumerate();
-
-        badge.html("<span class=\"glyphicon glyphicon-remove\"></span>");
-        badge.addClass("removable");
-        badge.click(removeHandler);
+    queRef.child(this.parentNode.id).child("completed")
+        .set(true);
 }
 
 function renumerate() {
@@ -184,4 +161,36 @@ function displayItem(objectID, name, number, prevChildName, completed) {
     }
     
     renumerate();
+}
+
+function updateItem(objectID, number, prevChildName, completed) {
+    var updatedItem = $("#" + objectID);
+
+    //if completed
+    if (completed) {
+        updatedItem.children(".glyphicon").addClass("completed");
+
+        var badge = updatedItem.children(".badge");
+
+        badge.removeClass("onqueue");
+
+        badge.html("<span class=\"glyphicon glyphicon-remove\"></span>");
+        badge.addClass("removable");
+        badge.click(removeHandler);
+    }
+
+    //if position changed
+    if (updatedItem.prev().attr('id') != prevChildName) {
+        //assuming this won't happen. If it does, we will know
+        alert("[UNFATHOMABLE USE CASE] Element position changed. Please report.");
+    }
+
+    //if number changed
+    updatedItem.next().text(number);
+
+    renumerate();    
+    if (updatedItem.hasClass('highlighted')) {
+        updatedItem.removeClass('highlighted');
+    }
+    updatedItem.addClass("highlighted");    
 }
