@@ -7,6 +7,7 @@ function enqueueFire() {
     var newTime = dateObj.getTime();
 
     var newName = document.getElementById('name').value;
+    newName = newName.substr(0, 10);
     var newNumber = document.getElementById('number').value;
 
     var newPushRef = queRef.push({name: newName,
@@ -44,13 +45,25 @@ function dequeueFire() {
     });
 
     thisRef.remove();
-
 }
 
-function completedFire() {
-    queRef.child(this.parentNode.id).child("completed")
+function completedFire(parentID) {
+    var dateObj = new Date();
+    var completionTime = dateObj.getTime();
+
+    queRef.child(parentID).child("completed")
         .set(true);
+    queRef.child(parentID).child("completed_at")
+        .set(completionTime);
 }
+
+function uncompletedFire(parentID) {
+    queRef.child(parentID).child("completed")
+        .set(false);
+    queRef.child(parentID).child("completed_at")
+        .set(null);
+}
+
 
 function syncFire() {
     queRef.on('child_added', function(snapshot, prevChildName) {
@@ -72,11 +85,8 @@ function syncFire() {
 
     queRef.on('child_removed', function(snapshot, prevChildName) {
         var queID = snapshot.name();
-        var queItem = snapshot.val();
 
-        removeItem(queID, queItem.name, queItem.number,
-            queItem.created_at, queItem.completed
-        );
+        removeItem(queID);
     });
 }
 
@@ -87,11 +97,14 @@ window.onload = function() {
 
     syncFire();
 
-    $(".list-group-item").click(queueItemHandler);
+    $(".list-group-item").click(function(event){
+        console.log("List group called");
+        queueItemHandler
+    });
 
-    $(".glyphicon-ok").click(completedFire);
-
+    //ToDo: Make this CSS3 compatible
     $(".glyphicon-plus").click(function() {
+        console.log("Plus called");
         if ($(this).hasClass('rotated')){
             $(".btn").hide();
             $("#enqueue-panel").slideUp(400, function(){
@@ -116,11 +129,11 @@ function removeItem(objectID){
     thisItem = $("#" + objectID);
     thisItem.next(".panel-body").remove();
     thisItem.slideUp(300);
+    renumerate();
 }
 
 
 function queueItemHandler(e) {
-        e.preventDefault();
         if (!$(this).hasClass('active')) {
             $(".list-group-item").removeClass("active");
             $(".panel-body").slideUp();
@@ -149,9 +162,17 @@ function displayItem(objectID, name, number, prevChildName, completed) {
 
     if (completed) {
         icon.className = "glyphicon glyphicon-ok completed"
+        $(icon).click(function(event){
+            event.stopPropagation();
+            uncompletedFire(this.parentNode.id);
+        });
+
     } else {
         icon.className = "glyphicon glyphicon-ok"        
-        $(icon).click(completedFire);
+        $(icon).click(function(event){
+            event.stopPropagation();
+            completedFire(this.parentNode.id);
+        });
     }
 
     node.appendChild(icon);
@@ -205,12 +226,31 @@ function updateItem(objectID, number, prevChildName, completed) {
         updatedItem.children(".glyphicon").addClass("completed");
 
         var badge = updatedItem.children(".badge");
-
         badge.removeClass("onqueue");
 
         badge.html("<span class=\"glyphicon glyphicon-remove\"></span>");
         badge.addClass("removable");
+
         badge.click(dequeueFire);
+
+        updatedItem.children(".glyphicon").click(function(event){
+            event.stopPropagation();
+            uncompletedFire(objectID);
+        });            
+
+    } else  {
+        updatedItem.children(".glyphicon").removeClass("completed");
+        
+        var badge = updatedItem.children(".badge");
+        badge.addClass("onqueue");
+
+        badge.html("");
+        badge.removeClass("removable");
+
+        updatedItem.children(".glyphicon").click(function(event){
+            event.stopPropagation();
+            completedFire(objectID);
+        });            
     }
 
     //if number changed
