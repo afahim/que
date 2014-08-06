@@ -1,3 +1,5 @@
+//Functions dealing with Firebase
+
 var queRef = null;
 var rootRef = null;
 var archiveRef = null;
@@ -57,7 +59,7 @@ function completedFire(parentID) {
         .set(completionTime);
 }
 
-function uncompletedFire(parentID) {
+function miscompletedFire(parentID) {
     queRef.child(parentID).child("completed")
         .set(false);
     queRef.child(parentID).child("completed_at")
@@ -87,8 +89,11 @@ function syncFire() {
         var queID = snapshot.name();
 
         removeItem(queID);
+        renumerate();
     });
 }
+
+//Code called on startup
 
 window.onload = function() {
     rootRef = new Firebase('https://qu.firebaseIO.com/');
@@ -125,14 +130,6 @@ window.onload = function() {
     });
 }
 
-function removeItem(objectID){
-    thisItem = $("#" + objectID);
-    thisItem.next(".panel-body").remove();
-    thisItem.slideUp(300);
-    renumerate();
-}
-
-
 function queueItemHandler(e) {
         if (!$(this).hasClass('active')) {
             $(".list-group-item").removeClass("active");
@@ -164,7 +161,7 @@ function displayItem(objectID, name, number, prevChildName, completed) {
         icon.className = "glyphicon glyphicon-ok completed"
         $(icon).click(function(event){
             event.stopPropagation();
-            uncompletedFire(this.parentNode.id);
+            miscompletedFire(this.parentNode.id);
         });
 
     } else {
@@ -235,7 +232,7 @@ function updateItem(objectID, number, prevChildName, completed) {
 
         updatedItem.children(".glyphicon").click(function(event){
             event.stopPropagation();
-            uncompletedFire(objectID);
+            miscompletedFire(objectID);
         });            
 
     } else  {
@@ -256,4 +253,11 @@ function updateItem(objectID, number, prevChildName, completed) {
     //if number changed
     updatedItem.next().text(number);
     renumerate();    
+}
+
+function removeItem(objectID){
+    thisItem = $("#" + objectID);
+    thisItem.next(".panel-body").remove();
+    thisItem.slideUp(300);
+    renumerate();
 }
